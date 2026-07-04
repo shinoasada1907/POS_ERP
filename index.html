@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS-to-ERP Integration Hub | Live Architectural Visualizer</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navigation -->
+        <header class="app-header">
+            <div class="logo-area">
+                <div class="logo-icon"><i class="fa-solid fa-network-wired"></i></div>
+                <div class="logo-text">
+                    <h1>POS-to-ERP Hub</h1>
+                    <span class="sub-text">Hệ thống Tích hợp & Trung chuyển Dữ liệu</span>
+                </div>
+            </div>
+            <div class="header-status">
+                <span class="status-badge pulse-green">
+                    <span class="dot"></span> LIVE SIMULATOR ACTIVE
+                </span>
+                <span class="version-badge">v1.0.0</span>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Sidebar: Project Roadmap & DB Schema -->
+            <aside class="sidebar">
+                <!-- Roadmap Section -->
+                <div class="sidebar-section">
+                    <h2 class="section-title"><i class="fa-solid fa-calendar-alt"></i> Lộ trình Triển khai (5 Tuần)</h2>
+                    <p class="section-desc">Chọn từng tuần để xem thay đổi về kiến trúc & dữ liệu.</p>
+                    <div class="week-selector">
+                        <button class="week-btn active" data-week="1">
+                            <span class="week-num">Tuần 1</span>
+                            <span class="week-title">Inbound POS API</span>
+                            <span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>
+                        </button>
+                        <button class="week-btn" data-week="2">
+                            <span class="week-num">Tuần 2</span>
+                            <span class="week-title">AI / OCR Extraction</span>
+                            <span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>
+                        </button>
+                        <button class="week-btn" data-week="3">
+                            <span class="week-num">Tuần 3</span>
+                            <span class="week-title">Core Logic & ERP Client</span>
+                            <span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>
+                        </button>
+                        <button class="week-btn" data-week="4">
+                            <span class="week-num">Tuần 4</span>
+                            <span class="week-title">Spring Batch Performance</span>
+                            <span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>
+                        </button>
+                        <button class="week-btn" data-week="5">
+                            <span class="week-num">Tuần 5</span>
+                            <span class="week-title">Human-in-the-loop & DLQ</span>
+                            <span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Database Schema Visualizer -->
+                <div class="sidebar-section db-section">
+                    <h2 class="section-title"><i class="fa-solid fa-database"></i> Database Schema (PostgreSQL)</h2>
+                    <div class="db-tables-container">
+                        <!-- Table: orders -->
+                        <div class="db-table" id="table-orders">
+                            <div class="table-header"><i class="fa-solid fa-table"></i> orders</div>
+                            <div class="table-columns">
+                                <div class="column-row pk"><span>id</span> <span class="col-type">UUID [PK]</span></div>
+                                <div class="column-row"><span>pos_machine_id</span> <span class="col-type">VARCHAR</span></div>
+                                <div class="column-row"><span>total_amount</span> <span class="col-type">DECIMAL</span></div>
+                                <div class="column-row"><span>discount</span> <span class="col-type">DECIMAL</span></div>
+                                <div class="column-row"><span>tax</span> <span class="col-type">DECIMAL</span></div>
+                                <div class="column-row"><span>status</span> <span class="col-type">VARCHAR</span></div>
+                                <div class="column-row"><span>created_at</span> <span class="col-type">TIMESTAMP</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Table: order_items -->
+                        <div class="db-table" id="table-order-items">
+                            <div class="table-header"><i class="fa-solid fa-table"></i> order_items</div>
+                            <div class="table-columns">
+                                <div class="column-row pk"><span>id</span> <span class="col-type">UUID [PK]</span></div>
+                                <div class="column-row fk"><span>order_id</span> <span class="col-type">UUID [FK]</span></div>
+                                <div class="column-row"><span>product_code</span> <span class="col-type">VARCHAR</span></div>
+                                <div class="column-row"><span>quantity</span> <span class="col-type">INTEGER</span></div>
+                                <div class="column-row"><span>unit_price</span> <span class="col-type">DECIMAL</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Table: staging_invoices -->
+                        <div class="db-table highlight-week-2" id="table-staging-invoices">
+                            <div class="table-header"><i class="fa-solid fa-table"></i> staging_invoices</div>
+                            <div class="table-columns">
+                                <div class="column-row pk"><span>id</span> <span class="col-type">UUID [PK]</span></div>
+                                <div class="column-row"><span>vendor_tax_code</span> <span class="col-type">VARCHAR</span></div>
+                                <div class="column-row"><span>invoice_date</span> <span class="col-type">DATE</span></div>
+                                <div class="column-row"><span>total_amount</span> <span class="col-type">DECIMAL</span></div>
+                                <div class="column-row"><span>raw_ocr_json</span> <span class="col-type">TEXT (JSONB)</span></div>
+                                <div class="column-row"><span>confidence_score</span> <span class="col-type">DECIMAL</span></div>
+                                <div class="column-row"><span>status</span> <span class="col-type">VARCHAR</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content Area: Diagram & Simulation -->
+            <main class="main-content">
+                <!-- Architecture Map Panel -->
+                <div class="card map-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-diagram-project"></i> Bản đồ Kiến trúc Hệ thống (System Architecture Map)</h3>
+                        <div class="map-legend">
+                            <span class="legend-item"><span class="legend-dot external"></span> Ngoại vi</span>
+                            <span class="legend-item"><span class="legend-dot hub"></span> Hub Trung gian</span>
+                            <span class="legend-item"><span class="legend-dot database"></span> Databases</span>
+                        </div>
+                    </div>
+                    <div class="card-body map-body">
+                        <!-- SVG Architecture Diagram -->
+                        <svg id="architecture-svg" viewBox="0 0 1000 480" width="100%" height="100%">
+                            <!-- Defs for arrows and gradients -->
+                            <defs>
+                                <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#8892b0" />
+                                </marker>
+                                <marker id="arrow-active" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#00ffcc" />
+                                </marker>
+                                <linearGradient id="gradient-hub" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#1e293b" />
+                                    <stop offset="100%" stop-color="#0f172a" />
+                                </linearGradient>
+                            </defs>
+
+                            <!-- FLOW PATHS (Background / Active) -->
+                            <!-- Flow 1: POS -> Inbound Controller -->
+                            <path id="path-pos-inbound" d="M 120,130 L 260,130" fill="none" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+                            <path id="path-pos-inbound-active" d="M 120,130 L 260,130" fill="none" stroke="#00ffcc" stroke-width="3" stroke-dasharray="10 5" stroke-dashoffset="0" class="flow-line" marker-end="url(#arrow-active)"/>
+
+                            <!-- Flow 2: Invoice Upload -> AI OCR Service -->
+                            <path id="path-ocr-upload" d="M 120,290 L 260,290" fill="none" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+                            <path id="path-ocr-upload-active" d="M 120,290 L 260,290" fill="none" stroke="#e0f7fa" stroke="#38bdf8" stroke-width="3" stroke-dasharray="10 5" stroke-dashoffset="0" class="flow-line" marker-end="url(#arrow-active)"/>
+
+                            <!-- Flow 3: Inbound Controller -> Core logic -->
+                            <path id="path-inbound-core" d="M 370,130 L 450,130" fill="none" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+                            <path id="path-inbound-core-active" d="M 370,130 L 450,130" fill="none" stroke="#00ffcc" stroke-width="3" stroke-dasharray="8 4" stroke-dashoffset="0" class="flow-line" marker-end="url(#arrow-active)"/>
+
+                            <!-- Flow 4: AI OCR -> Gemini API -->
+                            <path id="path-ocr-gemini" d="M 320,320 L 320,410 L 120,410" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#arrow)"/>
+                            <path id="path-ocr-gemini-active" d="M 320,320 L 320,410 L 120,410" fill="none" stroke="#a78bfa" stroke-width="2" stroke-dasharray="8 4" class="flow-line" marker-end="url(#arrow-active)"/>
+
+                            <!-- Flow 5: AI OCR -> Staging Invoices DB -->
+                            <path id="path-ocr-db" d="M 370,290 L 480,290 L 480,210 L 730,210" fill="none" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+                            <path id="path-ocr-db-active" d="M 370,290 L 480,290 L 480,210 L 730,210" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="10 5" class="flow-line" marker-end="url(#arrow-active)"/>
+
+                            <!-- Flow 6: AI OCR -> Review Dashboard UI -->
+                            <path id="path-ocr-review" d="M 320,260 L 320,210 L 520,210 L 520,160" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#arrow)"/>
+                            <path id="path-ocr-review-active" d="M 320,260 L 320,210 L 520,210 L 520,160" fill="none" stroke="#fb923c" stroke-width="2" stroke-dasharray="8 4" class="flow-line" marker-end="url(#arrow-active)"/>
+
+                            <!-- Flow 7: AI OCR -> Quarantine / DLQ -->
+                            <path id="path-ocr-dlq" d="M 370,305 L 560,305 L 560,350 L 560,370" fill="none" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+                            <path id="path-ocr-dlq-active" d="M 370,305 L 560,305 L 560,350 L 560,370" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="6 3" class="flow-line" marker-end="url(#arrow-active)"/>
+
+                            <!-- Flow 8: Core Logic -> PostgreSQL DB -->
+                            <path id="path-core-db" d="M 570,130 L 730,130" fill="none" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+                            <path id="path-core-db-active" d="M 570,130 L 730,130" fill="none" stroke="#00ffcc" stroke-width="3" stroke-dasharray="10 5" class="flow-line" marker-end="url(#arrow-active)"/>
+
+                            <!-- Flow 9: Core Logic -> ERP System (Feign) -->
+                            <path id="path-core-erp" d="M 570,110 L 640,110 L 640,60 L 890,60 L 890,140 L 860,140" fill="none" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+                            <path id="path-core-erp-active" d="M 570,110 L 640,110 L 640,60 L 890,60 L 890,140 L 860,140" fill="none" stroke="#34d399" stroke-width="3" stroke-dasharray="10 5" class="flow-line" marker-end="url(#arrow-active)"/>
+
+                            <!-- Flow 10: Spring Batch -> PostgreSQL DB (Read) -->
+                            <path id="path-batch-db" d="M 570,250 L 640,250 L 640,150 L 730,150" fill="none" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+                            <path id="path-batch-db-active" d="M 570,250 L 640,250 L 640,150 L 730,150" fill="none" stroke="#a78bfa" stroke-width="3" stroke-dasharray="10 5" class="flow-line" marker-end="url(#arrow-active)"/>
+
+                            <!-- Flow 11: Spring Batch -> H2 Metadata DB -->
+                            <path id="path-batch-h2" d="M 570,265 L 730,265" fill="none" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+                            <path id="path-batch-h2-active" d="M 570,265 L 730,265" fill="none" stroke="#a78bfa" stroke-width="3" stroke-dasharray="10 5" class="flow-line" marker-end="url(#arrow-active)"/>
+
+                            <!-- Flow 12: Spring Batch -> ERP System -->
+                            <path id="path-batch-erp" d="M 520,285 L 520,440 L 910,440 L 910,210 L 860,210" fill="none" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+                            <path id="path-batch-erp-active" d="M 520,285 L 520,440 L 910,440 L 910,210 L 860,210" fill="none" stroke="#a78bfa" stroke-width="3" stroke-dasharray="10 5" class="flow-line" marker-end="url(#arrow-active)"/>
+
+
+                            <!-- 1. EXTERNAL SYSTEMS -->
+                            <!-- POS Machine -->
+                            <g class="node node-external" id="node-pos" transform="translate(30, 90)">
+                                <rect width="90" height="80" rx="8" class="box" />
+                                <text x="45" y="32" class="node-icon"><tspan font-family="FontAwesome">&#xf109;</tspan></text>
+                                <text x="45" y="52" class="node-label">Máy POS</text>
+                                <text x="45" y="66" class="node-sub">Máy tính tiền</text>
+                            </g>
+
+                            <!-- Invoices (AI OCR source) -->
+                            <g class="node node-external" id="node-ocr-source" transform="translate(30, 250)">
+                                <rect width="90" height="80" rx="8" class="box" />
+                                <text x="45" y="32" class="node-icon"><tspan font-family="FontAwesome">&#xf1c1;</tspan></text>
+                                <text x="45" y="52" class="node-label">Hóa Đơn</text>
+                                <text x="45" y="66" class="node-sub">PDF / JPG / PNG</text>
+                            </g>
+
+                            <!-- AI OCR Service External (Gemini API) -->
+                            <g class="node node-external" id="node-gemini-api" transform="translate(30, 370)">
+                                <rect width="90" height="80" rx="8" class="box" />
+                                <text x="45" y="32" class="node-icon"><tspan font-family="FontAwesome">&#xf56c;</tspan></text>
+                                <text x="45" y="52" class="node-label">Gemini API</text>
+                                <text x="45" y="66" class="node-sub">Structured JSON</text>
+                            </g>
+
+
+                            <!-- 2. SPRING BOOT INTEGRATION HUB BOUNDARY -->
+                            <rect x="230" y="40" width="370" height="420" rx="16" class="hub-boundary" />
+                            <text x="245" y="30" class="boundary-label">POS-to-ERP Integration Hub (Spring Boot 3.x)</text>
+
+                            <!-- Inbound API Controller -->
+                            <g class="node node-hub" id="node-inbound-api" transform="translate(260, 90)">
+                                <rect width="110" height="70" rx="8" class="box" stroke-dasharray="5,2" />
+                                <text x="55" y="28" class="node-icon"><tspan font-family="FontAwesome">&#xf0ec;</tspan></text>
+                                <text x="55" y="46" class="node-label">POS REST API</text>
+                                <text x="55" y="58" class="node-sub">/v1/pos/orders</text>
+                            </g>
+
+                            <!-- AI OCR Module -->
+                            <g class="node node-hub highlight-week-2" id="node-ocr-module" transform="translate(260, 250)">
+                                <rect width="110" height="70" rx="8" class="box" />
+                                <text x="55" y="28" class="node-icon"><tspan font-family="FontAwesome">&#xf47e;</tspan></text>
+                                <text x="55" y="46" class="node-label">OCR Service</text>
+                                <text x="55" y="58" class="node-sub">Spring WebClient</text>
+                            </g>
+
+                            <!-- Core Hub Logic (Idempotency Engine, Routing) -->
+                            <g class="node node-hub highlight-week-3" id="node-core-logic" transform="translate(460, 90)">
+                                <rect width="110" height="70" rx="8" class="box" />
+                                <text x="55" y="28" class="node-icon"><tspan font-family="FontAwesome">&#xf085;</tspan></text>
+                                <text x="55" y="46" class="node-label">Core Sync Logic</text>
+                                <text x="55" y="58" class="node-sub">Idempotency, Feign</text>
+                            </g>
+
+                            <!-- Spring Batch Engine -->
+                            <g class="node node-hub highlight-week-4" id="node-spring-batch" transform="translate(460, 210)">
+                                <rect width="110" height="70" rx="8" class="box" />
+                                <text x="55" y="28" class="node-icon"><tspan font-family="FontAwesome">&#xf0ae;</tspan></text>
+                                <text x="55" y="46" class="node-label">Spring Batch</text>
+                                <text x="55" y="58" class="node-sub">Chunk Processing</text>
+                            </g>
+
+                            <!-- Human in the Loop (Review Dashboard) -->
+                            <g class="node node-hub highlight-week-5" id="node-human-review" transform="translate(260, 360)">
+                                <rect width="110" height="70" rx="8" class="box" />
+                                <text x="55" y="28" class="node-icon"><tspan font-family="FontAwesome">&#xf507;</tspan></text>
+                                <text x="55" y="46" class="node-label">Review Panel</text>
+                                <text x="55" y="58" class="node-sub">Thymeleaf / React</text>
+                            </g>
+
+                            <!-- Quarantine Zone (DLQ) -->
+                            <g class="node node-hub highlight-week-5" id="node-dlq" transform="translate(460, 360)">
+                                <rect width="110" height="70" rx="8" class="box" />
+                                <text x="55" y="28" class="node-icon"><tspan font-family="FontAwesome">&#xf071;</tspan></text>
+                                <text x="55" y="46" class="node-label">Quarantine DLQ</text>
+                                <text x="55" y="58" class="node-sub">/quarantine-zone</text>
+                            </g>
+
+
+                            <!-- 3. DATA STORES -->
+                            <!-- PostgreSQL Main DB -->
+                            <g class="node node-db" id="node-postgres" transform="translate(740, 100)">
+                                <rect width="90" height="75" rx="8" class="box" />
+                                <text x="45" y="28" class="node-icon"><tspan font-family="FontAwesome">&#xf1c0;</tspan></text>
+                                <text x="45" y="46" class="node-label">PostgreSQL</text>
+                                <text x="45" y="60" class="node-sub">Bảng orders / OCR</text>
+                            </g>
+
+                            <!-- H2 Metadata DB -->
+                            <g class="node node-db highlight-week-4" id="node-h2" transform="translate(740, 220)">
+                                <rect width="90" height="75" rx="8" class="box" />
+                                <text x="45" y="28" class="node-icon"><tspan font-family="FontAwesome">&#xf1c0;</tspan></text>
+                                <text x="45" y="46" class="node-label">H2 Database</text>
+                                <text x="45" y="60" class="node-sub">Batch Metadata</text>
+                            </g>
+
+
+                            <!-- 4. ERP TARGET SYSTEM -->
+                            <g class="node node-external highlight-week-3" id="node-erp" transform="translate(740, 340)">
+                                <rect width="90" height="80" rx="8" class="box" />
+                                <text x="45" y="32" class="node-icon"><tspan font-family="FontAwesome">&#xf54e;</tspan></text>
+                                <text x="45" y="52" class="node-label">Hệ thống ERP</text>
+                                <text x="45" y="66" class="node-sub">Đồng bộ SAP/Odoo</text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Info and Simulator Container -->
+                <div class="dashboard-grid">
+                    <!-- Week Details Panel -->
+                    <div class="card detail-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-circle-info"></i> Chi tiết Công việc: <span id="week-title-badge">Tuần 1</span></h3>
+                            <span class="badge" id="week-tech-badge">Spring Boot, PostgreSQL</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="week-detail-content" id="week-content-text">
+                                <!-- Loaded dynamically from app.js -->
+                            </div>
+                            
+                            <!-- Dynamic Database Migration Script Box -->
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <span><i class="fa-solid fa-code"></i> Dữ liệu / Cấu hình chính</span>
+                                    <button class="copy-btn" onclick="copyCode()"><i class="fa-regular fa-copy"></i> Copy</button>
+                                </div>
+                                <pre><code id="code-snippet" class="language-sql">-- SQL Migration loaded dynamically</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Live Simulator Panel -->
+                    <div class="card simulator-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-terminal"></i> Trình mô phỏng Live (Live Flow Simulator)</h3>
+                            <div class="sim-tabs">
+                                <button class="sim-tab active" data-sim="pos">POS Transaction</button>
+                                <button class="sim-tab" data-sim="ocr">AI OCR Invoice</button>
+                                <button class="sim-tab" data-sim="batch">EOD Batch Job</button>
+                            </div>
+                        </div>
+                        <div class="card-body sim-body">
+                            <!-- SIMULATOR 1: POS TRANSACTION -->
+                            <div class="sim-panel active" id="sim-pos">
+                                <div class="sim-description">
+                                    <p>Mô phỏng máy POS gửi dữ liệu bán hàng theo thời gian thực về API endpoint <code>/api/v1/pos/orders</code>.</p>
+                                </div>
+                                
+                                <div class="pos-form-container">
+                                    <div class="form-group-inline">
+                                        <label>Machine ID:</label>
+                                        <input type="text" id="pos-machine-id" value="POS_MCH_049">
+                                    </div>
+                                    <div class="form-group-inline">
+                                        <label>Sản phẩm:</label>
+                                        <select id="pos-product">
+                                            <option value="PROD_A01" data-price="120000">Cà phê Arabica (120,000đ)</option>
+                                            <option value="PROD_M05" data-price="95000">Trà Matcha Latte (95,000đ)</option>
+                                            <option value="PROD_S09" data-price="350000">Hạt sen sấy giòn (350,000đ)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-inline">
+                                        <label>SL:</label>
+                                        <input type="number" id="pos-qty" value="2" min="1" max="10">
+                                    </div>
+                                    <button class="btn btn-primary" id="btn-trigger-pos"><i class="fa-solid fa-play"></i> Bắn Đơn Hàng</button>
+                                </div>
+
+                                <div class="console-box">
+                                    <div class="console-header">Console Output (HTTP Logs)</div>
+                                    <div class="console-logs" id="pos-logs">
+                                        <div class="log-line system">[SYSTEM] Sẵn sàng nhận sự kiện giao dịch từ POS. Click 'Bắn Đơn Hàng' để mô phỏng.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SIMULATOR 2: AI OCR INVOICE -->
+                            <div class="sim-panel" id="sim-ocr">
+                                <div class="sim-description">
+                                    <p>Tải ảnh hóa đơn nhập hàng lên. AI (Gemini API) sẽ bóc tách cấu trúc và hiển thị màn hình Review (Human-in-the-loop) để kế toán duyệt trước khi ghi nhận vào ERP.</p>
+                                </div>
+
+                                <div class="ocr-workflow-container">
+                                    <!-- Step 1: Upload or Choose Draft -->
+                                    <div class="ocr-upload-zone" id="ocr-drop-zone">
+                                        <i class="fa-solid fa-file-invoice"></i>
+                                        <p>Kéo thả ảnh Hóa đơn hoặc chọn mẫu hóa đơn để chạy AI OCR</p>
+                                        <div class="invoice-templates">
+                                            <button class="btn btn-secondary btn-sm" id="btn-mock-invoice-good">Hóa đơn rõ nét (Độ tin cậy cao)</button>
+                                            <button class="btn btn-secondary btn-sm" id="btn-mock-invoice-blurry">Hóa đơn mờ (Cảnh báo < 90%)</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Step 2: The side-by-side Review Panel (Human-in-the-loop) - initially hidden -->
+                                    <div class="ocr-review-panel hidden" id="ocr-review-container">
+                                        <div class="ocr-left">
+                                            <h4>Hóa đơn Gốc (Original Image Draft)</h4>
+                                            <div class="mock-invoice-paper" id="invoice-paper-preview">
+                                                <!-- Dynamic paper view -->
+                                            </div>
+                                        </div>
+                                        <div class="ocr-right">
+                                            <h4>Kết quả Trích xuất AI (Structured JSON)</h4>
+                                            <div class="confidence-banner" id="ocr-confidence-banner">
+                                                <i class="fa-solid fa-shield-halved"></i> Độ tin cậy: <span id="ocr-confidence-val">98%</span>
+                                            </div>
+                                            
+                                            <div class="form-review-group">
+                                                <label>Mã số thuế bên bán:</label>
+                                                <input type="text" id="ocr-tax-code" class="ocr-field">
+                                            </div>
+                                            <div class="form-review-group">
+                                                <label>Ngày lập:</label>
+                                                <input type="text" id="ocr-date" class="ocr-field">
+                                            </div>
+                                            <div class="form-review-group">
+                                                <label>Tổng số tiền:</label>
+                                                <input type="number" id="ocr-total" class="ocr-field">
+                                            </div>
+                                            
+                                            <div class="review-actions">
+                                                <button class="btn btn-danger btn-sm" id="btn-ocr-reject"><i class="fa-solid fa-trash"></i> Hủy / Đẩy vào DLQ</button>
+                                                <button class="btn btn-success btn-sm" id="btn-ocr-approve"><i class="fa-solid fa-circle-check"></i> Xác nhận & Sync lên ERP</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="console-box mt-3">
+                                    <div class="console-header">Console Output (AI & OCR WebClient Logs)</div>
+                                    <div class="console-logs" id="ocr-logs">
+                                        <div class="log-line system">[SYSTEM] Sẵn sàng nhận hóa đơn nhập hàng. Hãy chọn mẫu hóa đơn phía trên.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SIMULATOR 3: SPRING BATCH JOB -->
+                            <div class="sim-panel" id="sim-batch">
+                                <div class="sim-description">
+                                    <p>Chạy tác vụ đồng bộ hàng loạt (Batch Job) cuối ngày để đối soát 10,000 đơn hàng từ PostgreSQL sang ERP. Sử dụng cơ chế phân đoạn (Chunk-oriented) để tối ưu hóa bộ nhớ RAM dưới 512MB.</p>
+                                </div>
+
+                                <div class="batch-control-area">
+                                    <button class="btn btn-primary" id="btn-trigger-batch"><i class="fa-solid fa-play"></i> Bắt đầu Batch Job (10,000 records)</button>
+                                    
+                                    <div class="performance-metrics">
+                                        <div class="metric-box">
+                                            <span class="metric-label">Đã xử lý (Items)</span>
+                                            <span class="metric-value" id="batch-progress-text">0 / 10,000</span>
+                                        </div>
+                                        <div class="metric-box">
+                                            <span class="metric-label">RAM Tiêu thụ</span>
+                                            <span class="metric-value" id="batch-ram-text">24 MB</span>
+                                        </div>
+                                        <div class="metric-box">
+                                            <span class="metric-label">Trạng thái H2 Metadata</span>
+                                            <span class="metric-value status-idle" id="batch-status-text">COMPLETED_NONE</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar-fill" id="batch-progress-bar"></div>
+                                    </div>
+                                </div>
+
+                                <div class="console-box">
+                                    <div class="console-header">Console Output (Spring Batch Logging Console)</div>
+                                    <div class="console-logs" id="batch-logs">
+                                        <div class="log-line system">[SYSTEM] Batch Engine ở trạng thái IDLE. Nhấp nút phía trên để bắt đầu chạy.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        
+        <!-- Footer / Technical info -->
+        <footer class="app-footer">
+            <p>Hệ thống mô phỏng POS-to-ERP Integration Hub | Công nghệ: Spring Boot 3.x, PostgreSQL, Spring Data JPA, Spring Batch, Gemini API, OpenFeign Client.</p>
+            <p>Thiết kế bởi <strong>Antigravity</strong> (Google DeepMind Team).</p>
+        </footer>
+    </div>
+
+    <!-- App Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
